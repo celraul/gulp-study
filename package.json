@@ -1,0 +1,31 @@
+{
+  "name": "celraul",
+  "version": "1.0.0",
+  "description": "basic site",
+  "main": "gulpfile.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/celraul/celraul.git"
+  },
+  "keywords": [
+    "celraul"
+  ],
+  "author": "celraul",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/celraul/celraul/issues"
+  },
+  "homepage": "https://github.com/celraul/celraul#readme",
+  "devDependencies": {
+    "browser-sync": "^2.26.7",
+    "gulp": "^4.0.2",
+    "gulp-sass": "^4.1.0",
+    "node-sass": "^4.14.1"
+  },
+  "dependencies": {
+    "del": "^5.1.0"
+  }
+}
