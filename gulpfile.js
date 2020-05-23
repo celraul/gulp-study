@@ -1,8 +1,12 @@
-const gulp = require("gulp");
-const del = require("del");
-var sass = require('gulp-sass');
+var gulp = require("gulp"),
+    del = require("del"),
+    concat = require('gulp-concat'),
+    rename = require('gulp-rename'),
+    uglify = require('gulp-uglify'),
+    sass = require('gulp-sass'),
+    browserSync = require('browser-sync').create();
+
 sass.compiler = require('node-sass');
-var browserSync = require('browser-sync').create();
 var reload = browserSync.reload;
 
 var config = {
@@ -14,8 +18,14 @@ const clean = () => {
     return del([config.distPath]);
 };
 
+// concat, copy, uglify and rename
 const copyJsFiles = () => {
-    return gulp.src(config.srcPath + 'js/*.js').pipe(gulp.dest(config.distPath + 'js'));
+    return gulp.src(config.srcPath + 'js/*.js')
+        .pipe(concat('main-concat.js'))
+        .pipe(gulp.dest(config.distPath + '/js'))
+        .pipe(rename('main-uglify.js'))
+        .pipe(uglify())
+        .pipe(gulp.dest(config.distPath + 'js'));
 };
 
 const copyImgFiles = () => {
@@ -26,13 +36,17 @@ const copyHmlFiles = () => {
     return gulp.src(config.srcPath + '/*.html').pipe(gulp.dest(config.distPath));
 };
 
+const copyVendorFiles = () =>{
+    return gulp.src(config.srcPath + 'vendor/**/*.*').pipe(gulp.dest(config.distPath + '/vendor/'));
+};
+
 const compileSass = () => {
     return gulp.src(config.srcPath + 'styles/main.scss')
         .pipe(sass().on('error', sass.logError))
         .pipe(gulp.dest('./dist/css'));
 };
 
-var copyAllFiles = gulp.series(copyHmlFiles, copyJsFiles, copyImgFiles);
+var copyAllFiles = gulp.series(copyHmlFiles, copyJsFiles, copyImgFiles, copyVendorFiles);
 var tasksInit = gulp.series(clean, copyAllFiles, compileSass);
 
 gulp.task('serve', function () {
